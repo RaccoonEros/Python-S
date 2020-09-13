@@ -1,5 +1,8 @@
 import Items
 
+######Hiiiiper basico, solamente porque un alero estaba jugando el RE4 y que me pije llega
+######ver a ese kbron decir "Stranger, stranger" jajajaja, totalmente opcional, podemos
+######quitarlo si queremos, ya es opinion de ustedes.
 
 class NonPlayableCharacter():
     def __init__(self):

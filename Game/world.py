@@ -34,7 +34,7 @@ class StartTile(MapTile):
         return text
 
 
-######################Condiciones para la aparición aleatoria de los monstruos#########
+#Condiciones para la aparición aleatoria de los monstruos y el texto de aparicion y muerte#
 class EnemyTile(MapTile):
     def __init__(self, x, y):
         r = random.random()
@@ -85,7 +85,7 @@ class EnemyTile(MapTile):
                              " si mismo y se \nreduce a una pequeña columna de humo que se disipa\n"
 
         super().__init__(x, y)
-#############################Texto de presentación segun cada monstruo####################
+#####################Condicional de introduccion de texto de cada monstruo#################
     def intro_text(self):
         if self.Monster.hp == 100:
             text = self.alive_text
@@ -166,7 +166,7 @@ class TraderTile(MapTile):
 
     def check_if_trade(self, player):
         while True:
-            print("Escoga la acción que desea (C)omprar, (V)ender, or (S)alir?")
+            print("Escoja la acción que desea (C)omprar, (V)ender, or (S)alir?")
             user_input = input()
             if user_input in ['S', 's']:
                 return
@@ -183,7 +183,7 @@ class TraderTile(MapTile):
         for i, item in enumerate(seller.inventory, 1):
             print("{}. {} - {} Gold".format(i, item.name, item.value))
         while True:
-            user_input = input("Choose an item or press Q to exit: ")
+            user_input = input("Escoja un item o presione Q para salir: ")
             if user_input in ['Q', 'q']:
                 return
             else:
@@ -192,22 +192,23 @@ class TraderTile(MapTile):
                     to_swap = seller.inventory[choice - 1]
                     self.swap(seller, buyer, to_swap)
                 except ValueError:
-                    print("Invalid choice!")
+                    print("Opcion invalida")
 
     def swap(self, seller, buyer, item):
         if item.value > buyer.gold:
-            print("That's too expensive")
+            print("Es demasiado caro")
             return
         seller.inventory.remove(item)
         buyer.inventory.append(item)
         seller.gold = seller.gold + item.value
         buyer.gold = buyer.gold - item.value
-        print("Trade complete!")
+        print("Trato completado")
 
     def intro_text(self):
         text = "Un ser extraño, definitivamente no humano, se encuentra en\n la habitación, muestra un bolso de monedas y te invita \n a ver, parece dispuesto a trancear"
         return 
 ######################Mapa de la mazmorra, a sustituir por el codigo de Chiza#############
+### Ademas lo saque de la web para probar el sistema de pelea y no le entiendo un carajo###
 world_dsl = """
 |EN|EN|VT|EN|EN|
 |EN|  |  |  |EN|
@@ -246,7 +247,7 @@ start_tile_location = None
 
 def parse_world_dsl():
     if not is_dsl_valid(world_dsl):
-        raise SyntaxError("DSL is invalid!")
+        raise SyntaxError("Cagada")
 
     dsl_lines = world_dsl.splitlines()
     dsl_lines = [x for x in dsl_lines if x]

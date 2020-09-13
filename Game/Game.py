@@ -3,7 +3,7 @@ from player import Player
 import world
 import sys
 
-####Este sera el archivo a arrancar############
+####Este sera el archivo a arrancar desde la consola############
 def play():
     print("Pije Proyecto Cansado")
     world.parse_world_dsl()

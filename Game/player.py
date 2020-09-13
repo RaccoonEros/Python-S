@@ -2,7 +2,9 @@ from collections import OrderedDict
 import Items
 import world
 
-
+####Creación basica del personaje, se que te toca a vos teruel pero ocupaba ir probando el
+#sistema de combate, asi que las caracteristicas estan a lo pendejo, ya ahi lo retocas a
+#forma que tenga bastante sentido.
 class Player:
     def __init__(self):
         self.inventory = [Items.Nudillo(),
@@ -50,7 +52,8 @@ class Player:
                 valid = True
             except (ValueError, IndexError):
                 print("Elección inválida, intente de nuevo")
-
+#Definicion de movimientos, actualmente solo son las armas que el personaje posee, pero
+#espero luego cambiarlo por usar ataques con arma, o ataques magicos
     def moves(self):
         weapons = [item for item in self.inventory
                        if isinstance(item, Items.Weapon)]
@@ -73,7 +76,7 @@ class Player:
             except (ValueError, IndexError):
                 print("Elección inválida, intente de nuevo")
 
-
+#Mover la posicion del personaje segun el mapa#
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
@@ -90,7 +93,9 @@ class Player:
     def move_west(self):
         self.move(dx=-1, dy=0)
 
-
+##Sistema de batalla del personaje, ya aqui involucre la defensa pero falta retocar de manera
+#######que las peleas se sientan con bastante sentido y no duren poco o mucho tiempo
+###Adeeemas, no le he añadido ahi estados para el personaje como envenenado, paralizado etc
     def attack(self):
         movement = self.moves()
         room = world.tile_at(self.x, self.y)

@@ -1,3 +1,9 @@
+#####Nuevamente teruel, me disculpo que tire aqui esto si a vos te toca lo de los items
+#####Pero la misma vaina, probaba el sistema de pelea y necesitaba ver que escogiera
+#####Arma, y se pudiera curar y esas vainas. Todavia no he tirado ahi que funcione la
+#####pocion de mana, pero porque no he tirado ningun ataque o movimiento magico que
+####gaste mana.
+
 class Weapon:
     def __init__(self):
         raise NotImplementedError("Objeto perteneciente a armas creado con vacios")

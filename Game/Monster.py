@@ -1,4 +1,5 @@
 #Creacion del Bestiario: Nombres y Características de los Monstruos
+#Todavia me falta ver que onda con la resistencia magica y cuanta exp den al morir
 class Monster:
     def __init__(self):
         raise NotImplementedError("Error en creación de monstruo")
@@ -115,6 +116,7 @@ class FireSpirit(Monster):
         self.daño2 = 15
         self.daño3 = 17
 
+########Aca este lo tengo pensado tirar como subjefe
 class Acolito(Monster):
     def __init__(self):
         self.name = "Acólito Óscuro"
@@ -130,6 +132,8 @@ class Acolito(Monster):
         self.daño2 = 40
         self.daño3 = 10
 
+
+##########Y este kbron sera el final boss
 class Nigromante(Monster):
     def __init__(self):
         self.name = "Nigromante"
