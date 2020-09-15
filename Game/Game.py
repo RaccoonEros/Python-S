@@ -52,7 +52,7 @@ def get_available_actions(room, player):
         if world.tile_at(room.x - 1, room.y):
             action_adder(actions, 'O', player.move_west, "Ir al Oeste")
     if player.hp < 100:
-        action_adder(actions, 'O', player.heal, "Objetos")
+        action_adder(actions, 'C', player.heal, "Objetos")
 
     return actions
 
