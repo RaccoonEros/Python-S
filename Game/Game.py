@@ -1336,18 +1336,18 @@ def instrucciones():
     print("   -Para moverser hacia la derecha presionar -d-")
     print("   -Para moverser hacia la izquierda presionar -a-")
     print("\n")
-    print("---------------------------------------------------")
-    print("#################     Pausa       ################")
-    print("---------------------------------------------------")
-    print("   -Para pausar presione -p-")
-    print("\n")
-    print("\n")
+#    print("---------------------------------------------------") Aun no he logrado que jale lo de pausa
+#    print("#################     Pausa       ################")
+#    print("---------------------------------------------------")
+#    print("   -Para pausar presione -p-")
+#    print("\n")
+#    print("\n")
     print("   [q]-Salir de instrucciones)")
     opcion_i=input("> ")
     while opcion_i not in ["q","Q"]:
         print("Porfavor ingresar un comando válido(q:Salir de instrucciones)")
         opcion_i=input("> ")
-    pantalla_titulo()
+    play()
     return(None)
 
 def seleccion_menu_titulo():
