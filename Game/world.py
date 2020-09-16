@@ -38,6 +38,11 @@ class StartTile(MapTile):
     def intro_text(self):
         text = "Sala de Inicio \n"
         return text
+    
+class EmptyTile(MapTile):
+    def intro_text(self):
+        text = "Casilla en blanco, descansa un poco"
+        return text
 
 
 #Condiciones para la aparición aleatoria de los monstruos y el texto de aparicion y muerte#
@@ -128,6 +133,93 @@ class EnemyTile(MapTile):
                     rr=random.random()
 
 
+############################Enfrentamiento Subjefe####################                    
+class SubBossTile(MapTile):
+    def __init__(self, x, y):
+        self.Monster = Monster.Acolito()
+        self.alive_text = "Te has topado con un subjefe, uno de los aprendices del Nigromante"
+        self.dead_text = "Ha sido un combate duro, pero finalmente, el adepto oscuro ha caido"
+        super().__init__(x, y)
+
+    def intro_text(self):
+        if self.Monster.hp == 100:
+            text = self.alive_text
+        elif self.Monster.hp <= 0:
+            text = self.dead_text
+        else :
+            text = ''
+        return text
+
+    def modify_player(self, player):
+        rr = random.random()
+        if self.Monster.still_alive():
+            if rr < 0.45:
+                try:
+                    player.hp = player.hp - (self.Monster.daño1/player.defense)
+                    print("{} uso {} y te hizo {} puntos de daño. Te quedan {} HP.\n".
+                        format(self.Monster.name, self.Monster.atk1, (self.Monster.daño1/player.magicdefense), player.hp))
+                except:
+                    rr = random.random()
+            elif rr < 0.75:
+                try:
+                    player.hp = player.hp - (self.Monster.daño2/player.defense)
+                    print("{} uso {} y te hizo {} puntos de daño. Te quedan {} HP.\n".
+                        format(self.Monster.name, self.Monster.atk2, (self.Monster.daño2/player.magicdefense), player.hp))
+                except:
+                    rr = random.random()
+            else :
+                try:
+                    player.hp = player.hp - (self.Monster.daño3/player.defense)
+                    print("{} uso {} y te hizo {} puntos de daño. Te quedan {} HP.\n".
+                        format(self.Monster.name, self.Monster.atk3, (self.Monster.daño3/player.magicdefense), player.hp))
+                except:
+                    rr=random.random()
+
+                    
+                    
+############################Enfrentamiento Jefe Final####################                    
+class BossTile(MapTile):
+    def __init__(self, x, y):
+        self.Monster = Monster.Nigromante()
+        self.alive_text = "Divisas una tumba en el centro de la mazmora... pero esta comienza a \nmoverse automaticamente, no lo puedes creer, el nigromanten o esta muerto \nusando algun oscuro hechizo, se ha convertido en un Licht muy poderoso"
+        self.dead_text = "Tras vencer al Nigromante que aguardaba en esta mazmorra, observas \nun camino iluminarse detras de ti, es la salida de la mazmorra"
+        super().__init__(x, y)
+
+    def intro_text(self):
+        if self.Monster.hp == 100:
+            text = self.alive_text
+        elif self.Monster.hp <= 0:
+            text = self.dead_text
+        else :
+            text = ''
+        return text
+
+    def modify_player(self, player):
+        rr = random.random()
+        if self.Monster.still_alive():
+            if rr < 0.45:
+                try:
+                    player.hp = player.hp - (self.Monster.daño1/player.defense)
+                    print("{} uso {} y te hizo {} puntos de daño. Te quedan {} HP.\n".
+                        format(self.Monster.name, self.Monster.atk1, (self.Monster.daño1/player.magicdefense), player.hp))
+                except:
+                    rr = random.random()
+            elif rr < 0.75:
+                try:
+                    player.hp = player.hp - (self.Monster.daño2/player.defense)
+                    print("{} uso {} y te hizo {} puntos de daño. Te quedan {} HP.\n".
+                        format(self.Monster.name, self.Monster.atk2, (self.Monster.daño2/player.magicdefense), player.hp))
+                except:
+                    rr = random.random()
+            else :
+                try:
+                    player.hp = player.hp - (self.Monster.daño3/player.defense)
+                    print("{} uso {} y te hizo {} puntos de daño. Te quedan {} HP.\n".
+                        format(self.Monster.name, self.Monster.atk3, (self.Monster.daño3/player.magicdefense), player.hp))
+                except:
+                    rr=random.random()
+        
+
 ###################################Condición de Victoria ###############################
 class VictoryTile(MapTile):
     def modify_player(self, player):
@@ -217,31 +309,31 @@ class TraderTile(MapTile):
 ### Ademas lo saque de la web para probar el sistema de pelea y no le entiendo un carajo###
 world_dsl = """
 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-|  |  |EN|EN|EN|EN|  |  |EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|  |  |
-|  |  |EN|EN|EN|EN|  |  |EN|  |  |  |  |  |  |  |  |  |  |  |EN|EN|EN|  |  |
-|  |  |EN|EN|EN|EN|  |  |EN|  |  |EN|EN|EN|EN|EN|EN|EN|EN|  |EN|EN|EN|  |  |
-|  |  |  |  |EN|  |  |  |EN|  |  |EN|  |  |  |EN|  |  |EN|  |  |  |  |  |  |
-|  |  |  |  |EN|EN|EN|EN|EN|  |  |EN|  |  |EN|EN|EN|  |EN|EN|EN|EN|EN|  |  |
-|  |  |  |  |EN|  |  |  |EN|  |  |EN|  |  |EN|EN|EN|  |EN|  |  |  |EN|  |  |
-|  |  |  |  |EN|  |  |  |EN|  |  |EN|  |  |  |EN|  |  |EN|  |  |EN|EN|EN|  |
-|  |  |  |  |EN|  |EN|EN|EN|EN|EN|EN|  |EN|EN|EN|EN|  |EN|EN|  |EN|EN|EN|  |
+|  |  |FG|FG|FG|FG|  |  |ET|ET|ET|ET|ET|ET|ET|ET|ET|ET|ET|ET|SB|FG|FG|  |  |
+|  |  |FG|TT|FG|FG|  |  |EN|  |  |  |  |  |  |  |  |  |  |  |FG|FG|FG|  |  |
+|  |  |FG|FG|FG|FG|  |  |EN|  |  |ET|ET|ET|ET|EN|ET|EN|EN|  |FG|FG|TT|  |  |
+|  |  |  |  |SB|  |  |  |EN|  |  |EN|  |  |  |ET|  |  |EN|  |  |  |  |  |  |
+|  |  |  |  |EN|EN|EN|EN|EN|  |  |ET|  |  |ET|EN|ET|  |EN|EN|EN|EN|EN|  |  |
+|  |  |  |  |EN|  |  |  |EN|  |  |ET|  |  |ET|EN|ET|  |EN|  |  |  |EN|  |  |
+|  |  |  |  |EN|  |  |  |EN|  |  |ET|  |  |  |EN|  |  |EN|  |  |EN|EN|EN|  |
+|  |  |  |  |EN|  |EN|EN|ET|EN|ET|EN|  |EN|EN|EN|EN|  |EN|EN|  |EN|EN|EN|  |
 |  |  |  |  |EN|  |EN|  |EN|  |  |  |  |EN|  |  |EN|  |  |EN|  |  |  |  |  |
-|  |  |  |  |EN|EN|EN|  |EN|  |  |EN|EN|EN|  |EN|EN|EN|  |EN|  |  |  |  |  |
-|  |  |  |  |  |  |  |  |EN|  |  |EN|  |  |  |EN|EN|EN|  |EN|EN|EN|EN|EN|  |
-|  |  |  |EN|EN|EN|EN|EN|EN|  |  |EN|  |  |  |EN|VT|EN|  |  |EN|  |  |  |  |
-|  |  |  |EN|EN|EN|EN|EN|EN|  |  |EN|  |  |  |  |  |  |  |  |EN|  |EN|EN|  |
-|  |  |  |EN|EN|EN|EN|EN|EN|  |  |EN|EN|EN|EN|  |EN|EN|EN|EN|EN|EN|EN|EN|  |
-|  |  |  |EN|  |  |  |  |  |  |  |  |  |  |EN|  |EN|  |  |EN|  |  |EN|EN|  |
-|  |EN|EN|EN|  |  |  |  |  |  |  |  |  |  |EN|  |EN|  |  |EN|  |  |  |  |  |
-|  |EN|  |  |  |  |  |  |  |  |  |  |  |  |EN|EN|EN|  |  |EN|  |EN|EN|EN|  |
-|  |EN|  |  |  |EN|EN|EN|  |  |  |  |  |  |  |EN|  |  |  |EN|  |EN|EN|EN|  |
-|  |EN|  |  |  |EN|EN|EN|  |  |  |  |  |  |EN|EN|EN|  |EN|EN|  |EN|EN|EN|  |
-|  |EN|  |  |  |  |EN|  |  |  |  |  |  |  |  |EN|EN|EN|  |EN|  |  |EN|  |  |
-|  |EN|EN|EN|  |  |EN|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |EN|  |  |
-|  |  |  |EN|  |  |EN|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |EN|  |  |
-|  |  |  |EN|  |  |EN|  |  |  |EN|EN|  |  |  |  |  |EN|EN|  |  |  |EN|  |  |
-|  |EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|EN|  |  |
-|  |EN|  |  |  |  |  |  |  |  |EN|EN|  |  |  |  |  |EN|EN|  |  |  |  |  |  |
+|  |  |  |  |EN|EN|EN|  |ET|  |  |EN|EN|EN|  |EN|EN|EN|  |EN|  |  |  |  |  |
+|  |  |  |  |  |  |  |  |EN|  |  |ET|  |  |  |EN|FB|EN|  |EN|EN|EN|EN|EN|  |
+|  |  |  |ET|ET|FG|ET|ET|ET|  |  |EN|  |  |  |  |VT|  |  |  |EN|  |  |  |  |
+|  |  |  |FG|ET|EN|ET|ET|ET|  |  |ET|  |  |  |  |  |  |  |  |EN|  |EN|EN|  |
+|  |  |  |ET|ET|ET|FG|ET|ET|  |  |EN|ET|ET|EN|  |ET|EN|ET|ET|EN|EN|EN|EN|  |
+|  |  |  |EN|  |  |  |  |  |  |  |  |  |  |ET|  |ET|  |  |ET|  |  |EN|EN|  |
+|  |EN|ET|EN|  |  |  |  |  |  |  |  |  |  |ET|  |EN|  |  |ET|  |  |  |  |  |
+|  |ET|  |  |  |  |  |  |  |  |  |  |  |  |EN|EN|EN|  |  |ET|  |FG|FG|FG|  |
+|  |EN|  |  |  |FG|FG|FG|  |  |  |  |  |  |  |SB|  |  |  |ET|  |FG|TT|EN|  |
+|  |ET|  |  |  |FG|FG|FG|  |  |  |  |  |  |FG|FG|FG|  |EN|ET|  |FG|FG|FG|  |
+|  |ET|  |  |  |  |SB|  |  |  |  |  |  |  |FG|TT|FG|  |  |ET|  |  |SB|  |  |
+|  |EN|ET|EN|  |  |ET|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |ET|  |  |
+|  |  |  |ET|  |  |ET|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |ET|  |  |
+|  |  |  |EN|  |  |EN|  |  |  |EN|EN|  |  |  |  |  |EN|ET|  |  |  |EN|  |  |
+|  |EN|ET|EN|ET|ET|ET|ET|ET|ET|EN|EN|ET|ET|ET|ET|EN|EN|ET|ET|ET|ET|EN|  |  |
+|  |EN|  |  |  |  |  |  |  |  |EN|EN|  |  |  |  |  |EN|ET|  |  |  |  |  |  |
 |  |ST|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 """
 
@@ -262,6 +354,9 @@ def is_dsl_valid(dsl):
 
 tile_type_dict = {"VT": VictoryTile,
                   "EN": EnemyTile,
+                  "ET": EmptyTile,
+                  "SB": SubBossTile,
+                  "FB": BossTile,
                   "ST": StartTile,
                   "FG": FindGoldTile,
                   "TT": TraderTile,

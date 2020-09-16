@@ -1449,6 +1449,10 @@ def get_available_actions(room, player):
         action_adder(actions, 'I', player.print_inventory, "Mostrar Inventario")
     if isinstance(room, world.EnemyTile) and room.Monster.still_alive():
         action_adder(actions, 'F', player.attack, "Atacar")
+    elif isinstance(room, world.SubBossTile) and room.Monster.still_alive():
+        action_adder(actions, 'F', player.attack, "Atacar")
+    elif isinstance(room, world.BossTile) and room.Monster.still_alive():
+        action_adder(actions, 'F', player.attack, "Atacar")
     else:
         if world.tile_at(room.x, room.y - 1):
             action_adder(actions, 'W', player.move_north, "Ir Arriba")        

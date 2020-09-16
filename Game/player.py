@@ -7,9 +7,7 @@ import world
 #forma que tenga bastante sentido.
 class Player:
     def __init__(self):
-        self.inventory = [Items.Nudillo(),
-                          Items.Daga(),
-                          Items.LifePotion()]
+        self.inventory = [Items.Nudillo(), Items.Daga(), Items.Relampago(), Items.Llamarada(), Items.EspadaHierro(), Items.LifePotion(), Items.LifePotion(), Items.LifePotion(), Items.LifePotion(), Items.MagicPotion(), Items.MagicPotion(), Items.MagicPotion()]
         self.weapons = [Items.Nudillo(), Items.Daga()]
         self.x = world.start_tile_location[0]
         self.y = world.start_tile_location[1]
@@ -19,6 +17,7 @@ class Player:
         self.pasoy = 0
         self.hp = 100
         self.mp = 40
+        self.magicdefense = 5
         self.defense = 4
         self.spd = 5
         self.exp = 0
@@ -50,33 +49,44 @@ class Player:
             choice = input("")
             try:
                 to_eat = consumables[int(choice) - 1]
-                self.hp = min(100, self.hp + to_eat.healing_value)
-                self.inventory.remove(to_eat)
-                print("Current HP: {}".format(self.hp))
-                valid = True
+                if to_eat.healing_value > 0:
+                    self.hp = min(100, self.hp + to_eat.healing_value)
+                    self.inventory.remove(to_eat)
+                    print("Valor de HP: {}".format(self.hp))
+                    valid = True
+                elif to_eat.magic_value > 0:
+                    self.mp = min(100, self.hp + to_eat.magic_value)
+                    self.inventory.remove(to_eat)
+                    print("Valor de MP: {}".format(self.hp))
+                    valid = True
             except (ValueError, IndexError):
                 print("Elección inválida, intente de nuevo")
 #Definicion de movimientos, actualmente solo son las armas que el personaje posee, pero
 #espero luego cambiarlo por usar ataques con arma, o ataques magicos
     def moves(self):
-        weapons = [item for item in self.inventory
-                       if isinstance(item, Items.Weapon)]
-        if not weapons:
-            print("No tiene armas para usar")
+        mov = [item for item in self.inventory
+                       if isinstance(item, Items.MovAtak)]
+        if not mov:
+            print("No tiene ataques para usar")
             return
 
-        for i, item in enumerate(weapons, 1):
-            print("Escoja arma para atacar: ")
+        for i, item in enumerate(mov, 1):
+            print("Escoja movimiento de ataque: ")
             print("{}. {}".format(i, item))
 
         valid = False
         while not valid:
             choice = input("")
             try:
-                atk = weapons[int(choice) - 1]
-                damage = min(0, atk.damage)
-                valid = True
-                return atk
+                atk = mov[int(choice) - 1]
+                if atk.damage > 0:
+                    damage = min(0, atk.damage)
+                    valid = True
+                    return atk
+                elif atk.magicdamage > 0:
+                    damage = min(0, atk.magicdamage)
+                    valid = True
+                    return atk
             except (ValueError, IndexError):
                 print("Elección inválida, intente de nuevo")
 
@@ -109,10 +119,20 @@ class Player:
         room = world.tile_at(self.x, self.y)
         Monster = room.Monster
         print("Usaste {} contra {}!".format(movement.name, Monster.name))
-        if Monster.defense == 0:
-            Monster.hp -= movement.damage
-        else:
-            Monster.hp -= movement.damage/Monster.defense
+        if movement.damage > 0:
+            if Monster.defense == 0:
+                Monster.hp -= movement.damage
+            else:
+                Monster.hp -= movement.damage/Monster.defense
+        elif movement.magicdamage > 0 :
+            if Monster.magdefense == 0:
+                Monster.hp -= movement.magicdamage
+                self.mp = min(100, self.hp - movement.mpcost)
+                print("Valor de MP: {}".format(self.hp))
+            else:
+                Monster.hp -= movement.magicdamage/Monster.magdefense
+                self.mp = min(100, self.hp - movement.mpcost)
+                print("Valor de MP: {}".format(self.hp))
         if not Monster.still_alive():
             print("Has matado a {}!".format(Monster.name))
         else:
