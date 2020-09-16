@@ -1,6 +1,8 @@
 from collections import OrderedDict
 import Items
 import world
+import sys
+import os
 
 ####Creación basica del personaje, se que te toca a vos teruel pero ocupaba ir probando el
 #sistema de combate, asi que las caracteristicas estan a lo pendejo, ya ahi lo retocas a
@@ -137,3 +139,65 @@ class Player:
             print("Has matado a {}!".format(Monster.name))
         else:
             print("El HP de {} es {}.".format(Monster.name, Monster.hp))
+    
+    def pausa(self):
+        print("#######################################")
+        print("               -PAUSA-                 ")
+        print("---------------------------------------")
+        print("   -[r] Reanudar juego")
+        print("   -[s] Salvar partida")
+        print("   -[q] Salir del juego")
+        comando=input("> ")
+        if comando=="r" or comando=="R" :
+            pass
+        elif comando=="s" or comando=="S" :
+            #LLamar funcion para guardara partida
+            print("Partida guardada")
+        elif comando=="q" or comando=="Q" :
+            print("#############################################################################")
+            print("Si no ha salvado su partida, se le recomienda salvar antes de salir del juego")
+            print("#############################################################################")
+            print("                    ¿Desea abandonar el juego?")
+            print("                    -[y] Si")
+            print("                    -[n] No")
+            respuesta=input("> ")
+            if respuesta=="y" or respuesta=="Y":
+                sys.exit()  
+            elif respuesta=="n" or respuesta=="N" :
+                pass
+            while respuesta not in ["y","n"]:
+                print("Por favor ingresar un comando valido (y:Si, n:No)")
+                respuesta=input("> ")
+                if respuesta=="y":
+                    sys.exit()  
+                elif respuesta=="n":
+                    pass
+        while comando not in ["r","R","s","S","q","Q"]:
+            print("Por favor ingresar un comando válido (r:reanudar juego, s:salvar partida, q, salir del juego")
+            comando=input("> ")
+            if comando=="r" or comando=="R" :
+                break
+            elif comando=="s" or comando=="S" :
+                #LLamar funcion para guardara partida
+                print("Partida guardada")
+            elif comando=="q" or comando=="Q" :
+                print("#############################################################################")
+                print("Si no ha salvado su partida, se le recomienda salvar antes de salir del juego")
+                print("#############################################################################")
+                print("                    ¿Desea abandonar el juego?")
+                print("                    -[y] Si")
+                print("                    -[n] No")
+                respuesta=input("> ")
+                if respuesta=="y" or respuesta=="Y" :
+                    sys.exit()  
+                elif respuesta=="n" or respuesta=="N":
+                    break
+                while respuesta not in ["y","Y","n","N"]:
+                    print("Por favor ingresar un comando valido (y:Si, n:No)")
+                    respuesta=input("> ")
+                    if respuesta=="y" or respuesta=="Y" :
+                        sys.exit()  
+                    elif respuesta=="n" or respuesta=="N" :
+                        pass
+                if(respuesta=="n"):
+                    break

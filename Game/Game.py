@@ -1256,71 +1256,6 @@ def zona_alrededor_mapa(mapa_caracteres,iup):
     mapa_mostrar= marco+mapa_mostrar+marco
     return(mapa_mostrar)
 
-def pausa():
-    os.system("cls")
-    print("#######################################")
-    print("               -PAUSA-                 ")
-    print("---------------------------------------")
-    print("   -[r] Reanudar juego")
-    print("   -[s] Salvar partida")
-    print("   -[q] Salir del juego")
-    
-    comando=input("> ")
-    if comando=="r" or comando=="R" :
-        pass
-    elif comando=="s" or comando=="S" :
-        #LLamar funcion para guardara partida
-        print("Partida guardada")
-    elif comando=="q" or comando=="Q" :
-        print("#############################################################################")
-        print("Si no ha salvado su partida, se le recomienda salvar antes de salir del juego")
-        print("#############################################################################")
-        print("                    ¿Desea abandonar el juego?")
-        print("                    -[y] Si")
-        print("                    -[n] No")
-        respuesta=input("> ")
-        if respuesta=="y" or respuesta=="Y":
-            sys.exit()  
-        elif respuesta=="n" or respuesta=="N" :
-            pass
-        while respuesta not in ["y","n"]:
-            print("Por favor ingresar un comando valido (y:Si, n:No)")
-            respuesta=input("> ")
-            if respuesta=="y":
-                sys.exit()  
-            elif respuesta=="n":
-                pass
-            
-    while comando not in ["r","R","s","S","q","Q"]:
-        print("Por favor ingresar un comando válido (r:reanudar juego, s:salvar partida, q, salir del juego")
-        comando=input("> ")
-        if comando=="r" or comando=="R" :
-            break
-        elif comando=="s" or comando=="S" :
-            #LLamar funcion para guardara partida
-            print("Partida guardada")
-        elif comando=="q" or comando=="Q" :
-            print("#############################################################################")
-            print("Si no ha salvado su partida, se le recomienda salvar antes de salir del juego")
-            print("#############################################################################")
-            print("                    ¿Desea abandonar el juego?")
-            print("                    -[y] Si")
-            print("                    -[n] No")
-            respuesta=input("> ")
-            if respuesta=="y" or respuesta=="Y" :
-                sys.exit()  
-            elif respuesta=="n" or respuesta=="N":
-                    break
-            while respuesta not in ["y","Y","n","N"]:
-                print("Por favor ingresar un comando valido (y:Si, n:No)")
-                respuesta=input("> ")
-                if respuesta=="y" or respuesta=="Y" :
-                    sys.exit()  
-                elif respuesta=="n" or respuesta=="N" :
-                    pass
-            if(respuesta=="n"):
-                break
-
 #################################INCORPORACION CODIGO EROS PARA CORRER########################################
 def instrucciones():
     """
@@ -1373,10 +1308,10 @@ def seleccion_menu_titulo():
 
 
 def play():
-    print("##########################################################")
-    print("|                       Unnamed RPG                      |")
-    print("|   Grupo 9: Cesar Gomez, Daniel Martínez, Eros Rivera   |")
-    print("##########################################################")
+    print("####################################################################")
+    print("|                            Unnamed RPG                           |")
+    print("|         Elaborado por Grupo 9: Cesar Gomez y Eros Rivera         |")
+    print("####################################$###############################")
     print("\n")
     print("    [p]-Comenzar Partida")
     print("    [i]-Instrucciones")
@@ -1447,6 +1382,7 @@ def get_available_actions(room, player):
     print("Escoger una accion: ")
     if player.inventory:
         action_adder(actions, 'I', player.print_inventory, "Mostrar Inventario")
+        action_adder(actions, 'P', player.pausa, "Pausar")
     if isinstance(room, world.EnemyTile) and room.Monster.still_alive():
         action_adder(actions, 'F', player.attack, "Atacar")
     elif isinstance(room, world.SubBossTile) and room.Monster.still_alive():
@@ -1472,5 +1408,15 @@ def action_adder(action_dict, hotkey, action, name):
     action_dict[hotkey.lower()] = action
     action_dict[hotkey.upper()] = action
     print("{}: {}".format(hotkey, name))
+
+
+
+    
+    
+    
+    
+    
+    
+    
     
 play()
