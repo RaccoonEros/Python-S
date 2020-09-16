@@ -13,6 +13,10 @@ class Player:
         self.weapons = [Items.Nudillo(), Items.Daga()]
         self.x = world.start_tile_location[0]
         self.y = world.start_tile_location[1]
+        self.posx = 1.5
+        self.posy = 0.5
+        self.pasox = 0
+        self.pasoy = 0
         self.hp = 100
         self.mp = 40
         self.defense = 4
@@ -77,21 +81,25 @@ class Player:
                 print("Elección inválida, intente de nuevo")
 
 #Mover la posicion del personaje segun el mapa#
-    def move(self, dx, dy):
+    def move(self, dx, dy, mx, my):
         self.x += dx
         self.y += dy
+        self.posx += mx
+        self.posy += my
+        self.pasox = mx
+        self.pasoy = my
 
     def move_north(self):
-        self.move(dx=0, dy=-1)
+        self.move(dx=0, dy=-1, mx=0, my=1)
 
     def move_south(self):
-        self.move(dx=0, dy=1)
+        self.move(dx=0, dy=1, mx=0, my=-1)
 
     def move_east(self):
-        self.move(dx=1, dy=0)
+        self.move(dx=1, dy=0, mx=1, my=0)
 
     def move_west(self):
-        self.move(dx=-1, dy=0)
+        self.move(dx=-1, dy=0, mx=-1, my=0)
 
 ##Sistema de batalla del personaje, ya aqui involucre la defensa pero falta retocar de manera
 #######que las peleas se sientan con bastante sentido y no duren poco o mucho tiempo

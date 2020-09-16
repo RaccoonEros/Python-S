@@ -1386,6 +1386,8 @@ def play():
         world.parse_world_dsl()
         player = Player()
         inicio = True
+        PosX = player.posx
+        PosY = player.posy
         while player.still_alive() and not player.victory:
             room = world.tile_at(player.x, player.y)
             if inicio == True:
@@ -1393,7 +1395,7 @@ def play():
                 os.system("cls")
                 fig, axs = plt.subplots(1,figsize=(6,6))
                 plt.ion()
-                mapa(ubicacion_personaje_x,ubicacion_personaje_y,MUROX, MUROY)
+                mapa(PosX,PosY,MUROX, MUROY)
                 mapa_ch=mapaj()
                 mapa_ch=actualizar_mapa(mapa_ch[0],0, 0)
                 mapa_amostrar=zona_alrededor_mapa(mapa_ch[0],mapa_ch[1])
@@ -1405,12 +1407,22 @@ def play():
                 eventos_faltantes=[1,2,3,4,5,6,7]
                 print("Este es el inicio de tu aventura, ya puedes empezar a moverte")
                 plt.pause(0.01)
-
                 inicio = False
             print(room.intro_text())
             room.modify_player(player)
             if player.still_alive() and not player.victory:
-                choose_action(room, player)
+                K = choose_action(room, player)
+                if K in ['w', 'W', 's', 'S', 'A', 'a', 'D', 'd']:
+                    plt.pause(0.01)
+                    plt.clf()
+                    os.system('cls')
+                    mapa(player.posx,player.posy,MUROX, MUROY)
+                    mapa_ch=actualizar_mapa(mapa_ch[0],player.pasox, player.pasoy)
+                    mapa_amostrar=zona_alrededor_mapa(mapa_ch[0],mapa_ch[1])
+                    print("   #-Muro del calabozo")
+                    print("   D-Cofre")
+                    print("   o-Tu")
+                    print(mapa_amostrar)                
             elif not player.still_alive():
                 print("Has muerto!")
     elif(confirmacion==None):
@@ -1424,6 +1436,8 @@ def choose_action(room, player):
         action = available_actions.get(action_input)
         if action:
             action()
+            if action_input in ['w', 'W', 's', 'S', 'A', 'a', 'D', 'd']:
+                return action_input
         else:
             print("Accion Inválida!")
 
@@ -1437,7 +1451,7 @@ def get_available_actions(room, player):
         action_adder(actions, 'F', player.attack, "Atacar")
     else:
         if world.tile_at(room.x, room.y - 1):
-            action_adder(actions, 'W', player.move_north, "Ir Arriba")
+            action_adder(actions, 'W', player.move_north, "Ir Arriba")        
         if world.tile_at(room.x, room.y + 1):
             action_adder(actions, 'S', player.move_south, "Ir Abajo")
         if world.tile_at(room.x + 1, room.y):
@@ -1446,8 +1460,6 @@ def get_available_actions(room, player):
             action_adder(actions, 'A', player.move_west, "Ir a la Izquierda")
     if player.hp < 100:
         action_adder(actions, 'O', player.heal, "Objetos")
-    if actions in ['W','S','D','A']:
-        fusion(actions)
 
     return actions
 
@@ -1457,92 +1469,4 @@ def action_adder(action_dict, hotkey, action, name):
     action_dict[hotkey.upper()] = action
     print("{}: {}".format(hotkey, name))
     
-    
-def fusion(jugada):
-    pas=caminar(ubicacion_personaje_x,ubicacion_personaje_y,eventos_faltantes,jugada)
-    if pas!=None:
-        pasox, pasoy=pas
-        if(pasox==0 and pasoy==0):
-            pausa()
-        else:
-            ubicacion_personaje_x=ubicacion_personaje_x+pasox
-            ubicacion_personaje_y=ubicacion_personaje_y+pasoy
-            plt.pause(0.01)
-            plt.clf()
-            os.system('cls')
-            mapa(ubicacion_personaje_x,ubicacion_personaje_y,MUROX, MUROY)
-            mapa_ch=actualizar_mapa(mapa_ch[0],pasox, pasoy)
-            mapa_amostrar=zona_alrededor_mapa(mapa_ch[0],mapa_ch[1])
-            print("   #-Muro del calabozo")
-            print("   D-Cofre")
-            print("   o-Tu")
-            print(mapa_amostrar)
-            
-ubicacion_personaje_x=1.5
-ubicacion_personaje_y=0.5  
-
-def caminar(UPX, UPY,lista_eventos_pendientes, jugada):
-    direccion=jugada
-    
-    if direccion=='w' or direccion=='W' :
-        if permitir_avanzar(MUROX,MUROY,UPX, UPY+1):
-            return(0,1)
-    
-        else:
-            print("Muro en esa dirección, intente ir en otro sentido")
-            return(None)
-    
-    elif direccion=='d' or direccion=='D' :
-        if (permitir_avanzar(MUROX,MUROY,UPX+1, UPY)):
-            return(1,0)
-    
-        else:
-            print("Muro en esa dirección, intente ir en otro sentido")
-            return(None)
-        
-    elif direccion=='a' or direccion=='A':
-        if (permitir_avanzar(MUROX,MUROY,UPX-1, UPY)):
-            return(-1,0)
-    
-        else:
-            print("Muro en esa dirección, intente ir en otro sentido")
-            return(None)
-    
-    elif direccion=='s' or direccion=='S' :
-        if (permitir_avanzar(MUROX,MUROY,UPX, UPY-1)):
-            if(UPX==1.5 and UPY==0.5):
-                print("No puedes huir del calabozo, una pared transparente no te permite salir")
-                return(None)
-            
-            elif (UPX==16.5 and UPY==17.5):
-                # Condicionante para no pasar a la sala del jefe sin haber conseguido la llave en en evento 2 (primer subjefe)     
-                if (2 in lista_eventos_pendientes): 
-                    print("No puedes pasar, necesitas la llave que custodia el Subjefe A")
-                    return(None)
-                else:
-                    return(0,-1)
-                
-            elif (UPX==15.5 and UPY==22.5):
-                # Condicionante para no pasar a la tercera habitacion trampa, sin abrir puerta del otro lado   
-                if (6 in lista_eventos_pendientes): 
-                    print("Puerta bloqueada, no puedes pasar")
-                    return(None)
-                else:
-                    return(0,-1)
-            else:
-                return(0,-1)
-    
-        else:
-            print("Muro en esa dirección, intente ir en otro sentido")
-            return(None)
-
-    elif direccion=='p' or direccion=='P':
-        print("Descansando....zzZZZ")
-        return(0,0)
-    
-    else:
-        print("Ha ingresado caracter incorrecto, intente de nuevo= ")
-        return(None)
-
-
 play()

@@ -21,6 +21,12 @@ class MapTile:
         pass
 
 #########################Introducción del Juego##############################
+class Posic(MapTile):
+    def PosIni(self):
+        self.ubicacion_personaje_x=1.5
+        self.ubicacion_personaje_y=0.5
+
+
 class StartTile(MapTile):
     def init_text(self):
             IntroGame = "Mientras investigaba un antiguo calabozo en busca de un tesoro antiguo, \nen la ultima habitacion donde reside la tumba de un antiguo nigromante \nuna trampa fue activada al reconocer un intruso en el area. \n \nEsto ha cerrado su ruta de retorno y ha activado a los monstruos de la \nzona, no queda mas opcion que luchar contra ellos y deshabilitar el mecanismo \nque lo ha encerrado. Quien sabe, tal vez el tesoro se encuentre aqui tambien."
@@ -295,3 +301,4 @@ def tile_at(x, y):
         return world_map[y][x]
     except IndexError:
         return None
+    
